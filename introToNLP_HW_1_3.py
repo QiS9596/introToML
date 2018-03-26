@@ -1,8 +1,10 @@
-import numpy as np
-import tensorflow as tf
 import re
 
-def loadDataIntoNDArray(filename:str):
+import numpy as np
+import tensorflow as tf
+
+
+def loadDataIntoNDArray(filename: str):
     """
     this method loads file with filename as it's name and returns ndarray object contains the data inside the file
     :param filename:path to target file
@@ -10,22 +12,23 @@ def loadDataIntoNDArray(filename:str):
     """
     with open(filename) as file:
         temp = file.readlines()
-        for i in range(0,len(temp)):
-            temp[i] = re.split(' ',temp[i].replace('\n',''))
-            for ii in range(0,len(temp[i])):
+        for i in range(0, len(temp)):
+            temp[i] = re.split(' ', temp[i].replace('\n', ''))
+            for ii in range(0, len(temp[i])):
                 temp[i][ii] = int(temp[i][ii])
         temp = np.array(temp)
         return temp
+
 
 prefix = './HW1-1/'
 data = 'data.txt'
 answer = 'answer.txt'
 
-train_1 = loadDataIntoNDArray(prefix+data)
-train_2 = loadDataIntoNDArray(prefix+answer).transpose()
+train_1 = loadDataIntoNDArray(prefix + data)
+train_2 = loadDataIntoNDArray(prefix + answer).transpose()
 
 # train_1 = np.array([[1., 2., 3.], [3., 4., 5.], [8., 5., 7.], [7., 2., 8.]])
-#train_2 = np.array([[1.], [0.], [0.], [1.]])
+# train_2 = np.array([[1.], [0.], [0.], [1.]])
 
 input_1 = tf.placeholder(tf.float32, shape=[None, 32])
 input_2 = tf.placeholder(tf.float32, shape=[None, 1])
