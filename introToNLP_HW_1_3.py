@@ -66,5 +66,6 @@ with tf.Session() as sess:
             print('loss : ', sess.run(loss, feed_dict={input_1: train_1, input_2: train_2}))
             print('predict : ', sess.run(layer_2_output, feed_dict={input_1: train_1, input_2: train_2}))
         sess.run(train, feed_dict={input_1: train_1, input_2: train_2})
-        if sess.run(loss, feed_dict={input_1: train_1, input_2: train_2}) < 0.0003:
+        if sess.run(loss, feed_dict={input_1: train_1, input_2: train_2}) < 0.0001:
+            print(i)
             break

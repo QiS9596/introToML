@@ -1,5 +1,6 @@
-﻿import tensorflow as tf
-import numpy as np
+﻿import numpy as np
+import tensorflow as tf
+
 
 def add_layer(inputs, input_tensor, output_tensor, activation_function=None):
     with tf.name_scope("layer"):
@@ -20,23 +21,26 @@ input_data = np.random.rand(10)
 input_data = input_data.reshape(len(input_data), 1)
 true_label = input_data + 5
 
-input_feed = tf.placeholder(tf.float32, shape = ["your answer", 1])
-Label_feed = tf.placeholder(tf.float32, shape = [None, 1])
+input_feed = tf.placeholder(tf.float32, shape=[None, 1])  # question 1
+Label_feed = tf.placeholder(tf.float32, shape=[None, 1])
 
-hidden_layer = add_layer(input_feed, 1, 100, activation_function = None)
+hidden_layer = add_layer(input_feed, 1, 100, activation_function=None)
 
-output_layer = add_layer(hidden_layer, "your answer", 1, activation_function = None)
+output_layer = add_layer(hidden_layer, 100, 1, activation_function=None)  # question
 
-loss = tf.reduce_mean(tf.reduce_sum(Label_feed - output_layer))
-train_epoch = tf.train.GradientDescentOptimizer(learning_rate = 0.01).minimize(loss)
+# loss = tf.reduce_mean(tf.reduce_sum(Label_feed - output_layer))
+# the former loss function seems result in some wired result, so I change to mean square error
+loss = tf.losses.mean_squared_error(Label_feed, output_layer)
+train_epoch = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(loss)
 
-sess = tf."your answer"()
+sess = tf.Session()
 init = tf.global_variables_initializer()
 sess.run(init)
 
 for step in range(100):
-    sess.run(train_epoch, feed_dict = {input_feed: "your answer", Label_feed: "your answer"})
+    sess.run(train_epoch, feed_dict={input_feed: input_data, Label_feed: true_label})  # questions
     if step % 5 == 0:
-        print(sess.run(loss, feed_dict = {input_feed: "your answer", Label_feed: "your answer"}))
-
+        print(sess.run(loss, feed_dict={input_feed: input_data, Label_feed: true_label}))
+# test
+print(sess.run(output_layer, feed_dict={input_feed: [[1], [2], [4]], Label_feed: true_label}))
 sess.close()
