@@ -52,7 +52,7 @@ bias_2 = tf.get_variable(name="bias_2", shape=[1], dtype=tf.float32,
                          initializer=tf.truncated_normal_initializer(mean=0.0, stddev=0.1))
 layer_2_output = tf.sigmoid(tf.add(tf.matmul(layer_1_output, weight_2), bias_2))
 
-loss = tf.losses.mean_squared_error(train_2, layer_2_output)
+loss = tf.losses.mean_squared_error(input_2, layer_2_output)
 
 optimizer = tf.train.GradientDescentOptimizer(0.1)
 train = optimizer.minimize(loss)
