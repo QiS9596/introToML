@@ -6,7 +6,7 @@ import tensorflow as tf
 class MultilayerPerceptron:
     def __init__(self, inputsize, output_size, hidden_layer, transfer_function=tf.nn.sigmoid,
                  hidden_layer_activation=None,
-                 optimizer=tf.train.GradientDescentOptimizer(5.0), training_scale=0.1):
+                 optimizer=tf.train.GradientDescentOptimizer(0.5), training_scale=0.1):
         """
 
         :param inputsize: input dimension
@@ -60,7 +60,7 @@ class MultilayerPerceptron:
         self.printLayers()
         # adding the rest fo the hidden layer and the output layer
         for i in range(1, len(self.hidden_layer) - 1):
-            self.layers.append(self.add_layer(self.hidden_layer[i], self.hidden_layer[i+1], self.layers[-1],
+            self.layers.append(self.add_layer(self.hidden_layer[i], self.hidden_layer[i + 1], self.layers[-1],
                                               self.hidden_layer_activation))
         if len(self.hidden_layer) > 1:
             self.layers.append(
@@ -68,10 +68,9 @@ class MultilayerPerceptron:
 
     def add_layer(self, input_n, output_n, input_tensor, activation_function=None):
 
-        weights = tf.Variable(name='weight', initial_value=tf.random_normal([input_n, output_n]))
-        bias = tf.Variable(name='bias', initial_value=tf.random_normal([1, output_n]))
-        # print(input_tensor)
-        # print(weights)
+        weights = tf.Variable(name='weight', initial_value=tf.random_normal([input_n, output_n],dtype= tf.float32))
+        bias = tf.Variable(name='bias', initial_value=tf.random_normal([1, output_n],dtype=tf.float32))
+
         layer = tf.add(tf.matmul(input_tensor, weights), bias)
         if activation_function is None:
             output = layer
@@ -86,12 +85,16 @@ class MultilayerPerceptron:
     def predict(self, input):
         return self.sess.run(self.output, feed_dict={self.input: input})
 
-    def hitrate(self,input, label):
-        hit = 0
-        for i in range(0,len(input)):
-            if self.predict([input[i]])[0] == label[i]:
-                hit +=1
-        return hit/len(input)
+    def hitrate(self, input, label):
+        hit = 0.
+        for i in range(0, len(input)):
+            a = self.predict([input[i]])[0]
+            print(self.predict([input[i]])[0])
+            print(label[i])
+            print('-')
+            if a[0] == label[i][0]:
+                hit += 1
+        return hit / float(len(input))
 
     def single_step_train(self, input_data, label):
         self.sess.run(self.train_step, feed_dict={self.input: input_data, self.labels: label})
@@ -130,16 +133,32 @@ def getHiddenarchitecture(min_layer_number=5, max_layer_number=10, min_node_num=
         hidden.append(random.randint(min_node_num, max_node_num))
     return hidden
 
+
 def tryOneArchitecture(input_dimension, output_dimension, input_data, labels, hidden):
-    MLP = MultilayerPerceptron(input_dimension,output_dimension,hidden,hidden_layer_activation=tf.nn.softplus)
-    print(MLP.epoch_train(input_data=input_data[0:500],label = labels[0:500]))
-    print(MLP.hitrate(input_data[500:1000],labels[500:1000]))
+    MLP = MultilayerPerceptron(input_dimension, output_dimension, hidden, hidden_layer_activation=tf.nn.softplus)
+    print(MLP.epoch_train(input_data=input_data, label=labels))
+
+    print(MLP.hitrate(input_data[500:1000], labels[500:1000]))
+    return MLP
 
 
 input_dimension = 6
 output_dimension = 1
 from xlsReader import excelReader
-reader = excelReader('./training data(1000).xlsx')
-data,labels = reader.processData()
 
-tryOneArchitecture(input_dimension,output_dimension,data,labels,[500,300,100,50,50,50,50])
+reader = excelReader('./training data(1000).xlsx')
+data, labels = reader.processData()
+
+MLP = tryOneArchitecture(input_dimension, output_dimension, data, labels, [50,100,300,40])
+reader = excelReader('./testing data.xlsx')
+data, labels = reader.processData()
+print(data)
+
+file = open('output.txt','w')
+file.write('id,survive\n')
+for i in range(0, len(data)):
+    result = MLP.predict([data[i]])
+    print(result)
+    print(labels[i])
+    file.write(str(i)+','+str(result[0][0])+'\n')
+file.close()

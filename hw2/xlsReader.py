@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+from sklearn.preprocessing import MinMaxScaler
 class excelReader:
     def __init__(self, filepath):
         self.filepath = filepath
@@ -16,8 +16,13 @@ class excelReader:
         self.df['sex'] = self.df['sex'].map({'female':0,'male':1}).astype(int)
         ndarray = self.df.values
         labels = ndarray[:,1]
-        data = ndarray[:,1:]
+        data = self.df.drop(['survived'],axis = 1).values
+        scaler = MinMaxScaler(feature_range = (0,1))
+        #data = scaler.fit_transform(data)
         labels = labels.reshape(len(labels),1)
+        permutation = np.random.permutation(labels.shape[0])
+        data = data[permutation,:]
+        labels = labels[permutation]
         return data, labels
 
 # abc = excelReader('./training data(1000).xlsx')
