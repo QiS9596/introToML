@@ -17,7 +17,8 @@ class excelReader:
         ndarray = self.df.values
         labels = ndarray[:,1]
         data = ndarray[:,1:]
+        labels = labels.reshape(len(labels),1)
         return data, labels
 
-abc = excelReader('./training data(1000).xlsx')
-abc.processData()
+# abc = excelReader('./training data(1000).xlsx')
+# abc.processData()
