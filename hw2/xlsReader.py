@@ -6,7 +6,7 @@ class excelReader:
         self.filepath = filepath
         self.raw_data = pd.read_excel(filepath)
 
-    def processData(self):
+    def processData(self, random = True):
         self.df = self.raw_data.drop(['name','home.dest','body', 'boat','ticket','embarked','cabin','id'], axis = 1)
 
         age_mean = self.df['age'].mean()
@@ -20,9 +20,10 @@ class excelReader:
         scaler = MinMaxScaler(feature_range = (0,1))
         #data = scaler.fit_transform(data)
         labels = labels.reshape(len(labels),1)
-        permutation = np.random.permutation(labels.shape[0])
-        data = data[permutation,:]
-        labels = labels[permutation]
+        if random:
+            permutation = np.random.permutation(labels.shape[0])
+            data = data[permutation,:]
+            labels = labels[permutation]
         return data, labels
 
 # abc = excelReader('./training data(1000).xlsx')
