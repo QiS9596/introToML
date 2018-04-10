@@ -48,7 +48,7 @@ class MultilayerPerceptron:
         if len(self.hidden_layer) != 0:
             inputlayer_output = self.hidden_layer[0]
         print(inputlayer_output)
-        self.input = tf.placeholder(tf.float32, shape=[None, self.inputsize])
+        self.input = tf.placeholder(tf.float32, shape=[None, self.inputsize])#TODO
         self.layers.append(self.add_layer(self.inputsize, inputlayer_output, self.input, self.hidden_layer_activation))
         # adding first hidden layer
         if len(self.hidden_layer) != 0:
@@ -70,6 +70,7 @@ class MultilayerPerceptron:
 
         weights = tf.Variable(name='weight', initial_value=tf.random_normal([input_n, output_n],dtype= tf.float32))
         bias = tf.Variable(name='bias', initial_value=tf.random_normal([1, output_n],dtype=tf.float32))
+        print(weights)
 
         layer = tf.add(tf.matmul(input_tensor, weights), bias)
         if activation_function is None:
