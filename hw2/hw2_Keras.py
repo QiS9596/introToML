@@ -25,3 +25,7 @@ model.fit(x=data, y = labels,epochs=100,validation_split=0.1,batch_size=10,verbo
 
 scores = model.evaluate(x=data,y=labels)
 print(scores[1])
+
+validation_data, validation_labels = excelReader('./testing data.xlsx').processData(random=False)
+output = model.predict(validation_data)
+print(output)
