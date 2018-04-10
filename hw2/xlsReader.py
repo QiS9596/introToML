@@ -28,3 +28,17 @@ class excelReader:
 
 # abc = excelReader('./training data(1000).xlsx')
 # abc.processData()
+
+class kaggleFileGenerator:
+    def __init__(self, title):
+        self.title = title
+
+    def output(self, name = './output.txt', data = []):
+        with open(name,'w') as file:
+            file.write(self.title)
+            file.write('\n')
+            for i in range(len(data)):
+                file.write(str(i+1))
+                file.write(',')
+                file.write(str(data[i]))
+                file.write('\n')
