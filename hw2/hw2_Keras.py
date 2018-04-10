@@ -28,4 +28,12 @@ print(scores[1])
 
 validation_data, validation_labels = excelReader('./testing data.xlsx').processData(random=False)
 output = model.predict(validation_data)
-print(output)
+
+for i in range(len(output)):
+    if output[i]<0.5:
+        output[i] = 0
+    else:
+        output[i] = 1
+from xlsReader import kaggleFileGenerator
+
+kaggleFileGenerator('id,survive').output(data=output)
