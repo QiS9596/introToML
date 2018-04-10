@@ -38,7 +38,7 @@ class kaggleFileGenerator:
             file.write(self.title)
             file.write('\n')
             for i in range(len(data)):
-                file.write(str(i+1))
+                file.write(str(i))
                 file.write(',')
-                file.write(str(data[i][0]))
+                file.write(str(int(data[i][0])))
                 file.write('\n')

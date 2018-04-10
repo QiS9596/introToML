@@ -5,10 +5,13 @@ from keras.layers import Dense, Dropout
 from keras.layers import Activation
 
 model = Sequential()
-model.add(Dense(units=80, input_dim=6, kernel_initializer='uniform'))
+model.add(Dense(units=300, input_dim=6, kernel_initializer='uniform'))
 model.add(Activation('relu'))
 
-model.add(Dense(units=60, kernel_initializer='uniform'))
+model.add(Dense(units=300, kernel_initializer='uniform'))
+model.add(Activation('relu'))
+
+model.add(Dense(units=200, kernel_initializer='uniform'))
 model.add(Activation('relu'))
 
 model.add(Dense(units=1, kernel_initializer='uniform'))
@@ -36,4 +39,4 @@ for i in range(len(output)):
         output[i] = 1
 from xlsReader import kaggleFileGenerator
 
-kaggleFileGenerator('id,survive').output(data=output)
+kaggleFileGenerator('id,survived').output(data=output)
