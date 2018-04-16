@@ -5,13 +5,17 @@ from keras.layers import Dense, Dropout
 from keras.layers import Activation
 
 model = Sequential()
-model.add(Dense(units=300, input_dim=6, kernel_initializer='uniform'))
+model.add(Dense(units=30, input_dim=6, kernel_initializer='uniform'))
 model.add(Activation('relu'))
 
-model.add(Dense(units=300, kernel_initializer='uniform'))
+model.add(Dense(units=30, kernel_initializer='uniform'))
 model.add(Activation('relu'))
 
-model.add(Dense(units=200, kernel_initializer='uniform'))
+model.add(Dense(units=30, kernel_initializer='uniform'))
+model.add(Activation('relu'))
+model.add(Dense(units=30, kernel_initializer='uniform'))
+model.add(Activation('relu'))
+model.add(Dense(units=30, kernel_initializer='uniform'))
 model.add(Activation('relu'))
 
 model.add(Dense(units=1, kernel_initializer='uniform'))

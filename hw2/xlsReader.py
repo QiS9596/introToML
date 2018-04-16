@@ -18,7 +18,7 @@ class excelReader:
         labels = ndarray[:,1]
         data = self.df.drop(['survived'],axis = 1).values
         scaler = MinMaxScaler(feature_range = (0,1))
-        #data = scaler.fit_transform(data)
+        data = scaler.fit_transform(data)
         labels = labels.reshape(len(labels),1)
         if random:
             permutation = np.random.permutation(labels.shape[0])
